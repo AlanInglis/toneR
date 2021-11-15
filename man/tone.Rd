@@ -2,44 +2,20 @@
 % Please edit documentation in R/toneR.R
 \name{tone}
 \alias{tone}
-\title{Play a short sound}
+\title{toneR}
 \usage{
 tone(sound = 1)
 }
 \arguments{
-\item{sound}{character string or number specifying what sound to be played by
-either specifying one of the built in sounds, specifying the path to a wav
-file or specifying an url. The default is 1. Possible sounds are:
-\enumerate{ \item \code{"ping"} \item \code{"coin"} \item \code{"fanfare"}
-\item \code{"complete"} \item \code{"treasure"} \item \code{"ready"} \item
-\code{"shotgun"} \item \code{"mario"} \item \code{"wilhelm"} \item
-\code{"facebook"} \item \code{"sword"} } If \code{sound} does not match any
+\item{sound}{A number or name (character) of the sound to be played.
+Possible sounds are:
+\enumerate{ \item \code{"purge"} }. If \code{sound} does not match any
 of the sounds above a random sound will be played.}
 }
 \description{
-\code{tone} plays a short sound which is useful if you want to get notified,
-for example, when a script has finished. As an added bonus there are a number
-of different sounds to choose from.
-}
-\details{
-If \code{tone} is not able to play the sound a warning is issued rather than
-an error. This is in order to not risk aborting or stopping the process that
-you wanted to get notified about.
+Play a sound.
 }
 \examples{
 # Play a "ping" sound
-beep()
-
-\dontrun{
-# Play a fanfare instead of a "ping".
-beep("fanfare")
-# or
-beep(3)
-
-# Play a random sound
-beep(0)
-
-# Update all packages and "ping" when it's ready
-update.packages(ask=FALSE); beep()
-}
+tone()
 }

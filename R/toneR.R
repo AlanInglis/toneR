@@ -1,114 +1,119 @@
-#' Play a short sound
+#' toneR
 #'
-#'\code{tone} plays a short sound which is useful if you want to get notified,
-#'for example, when a script has finished. As an added bonus there are a number
-#'of different sounds to choose from.
-#'
-#'If \code{tone} is not able to play the sound a warning is issued rather than
-#'an error. This is in order to not risk aborting or stopping the process that
-#'you wanted to get notified about.
-#'
-#'@param sound character string or number specifying what sound to be played by
-#'  either specifying one of the built in sounds, specifying the path to a wav
-#'  file or specifying an url. The default is 1. Possible sounds are:
-#'  \enumerate{ \item \code{"ping"} \item \code{"coin"} \item \code{"fanfare"}
-#'  \item \code{"complete"} \item \code{"treasure"} \item \code{"ready"} \item
-#'  \code{"shotgun"} \item \code{"mario"} \item \code{"wilhelm"} \item
-#'  \code{"facebook"} \item \code{"sword"} } If \code{sound} does not match any
-#'  of the sounds above a random sound will be played.
+#' @description Play a sound.
 #'
 #'
-#'@return NULL
+#' @param sound A number or name (character) of the sound to be played.
+#' Possible sounds are:
+#' \enumerate{ \item \code{"purge"} }. If \code{sound} does not match any
+#' of the sounds above a random sound will be played.
+#'
+#' @importFrom stringr str_trim
+#' @importFrom stringr str_detect
+#' @importFrom stringr str_replace_all
+#' @importFrom audio play
+#' @importFrom audio load.wave
+#' @import utils
+#'
+#' @return NULL
 #'
 #' @examples
 #' # Play a "ping" sound
-#' beep()
-#'
-#' \dontrun{
-#' # Play a fanfare instead of a "ping".
-#' beep("fanfare")
-#' # or
-#' beep(3)
-#'
-#' # Play a random sound
-#' beep(0)
-#'
-#' # Update all packages and "ping" when it's ready
-#' update.packages(ask=FALSE); beep()
-#' }
-#'@export
-tone <- function(sound=1) {
+#' tone()
+#' @export
 
+
+
+tone <- function(sound = 1) {
+
+  # set all sounds
   sounds <- c(purge = "purge.wav")
 
+  # set sound path
   sound_path <- NULL
-  if(is.na(sounds[sound]) || length(sounds[sound]) != 1) {
-    if(is.character(sound)) {
+
+
+  if (is.na(sounds[sound]) || length(sounds[sound]) != 1) {
+    if (is.character(sound)) {
+      # trim whitespace from string
       sound <- str_trim(sound)
-      if(file.exists(sound)) {
+      # set the chosen sound
+      if (file.exists(sound)) {
         sound_path <- sound
       } else {
-        warning(paste('"', sound, '" is not a valid sound nor path, playing a random sound instead.', sep = ""))
+        warning(paste('"', sound, '" is not a tone found in toneR. Playing a random tone instead.', sep = ""))
       }
     }
   } else {
-    sound_path <- system.file(paste("sounds/", sounds[sound], sep=""), package="toneR")
+    sound_path <- system.file(paste("sounds/", sounds[sound], sep = ""), package = "toneR")
   }
 
-  if(is.null(sound_path)) { # play a random sound
-    sound_path <- system.file(paste("sounds/", sample(sounds, size=1), sep=""), package="toneR")
+  # If sound doesn't exist, play a random sound
+  if (is.null(sound_path)) {
+    sound_path <- system.file(paste("sounds/", sample(sounds, size = 1), sep = ""), package = "toneR")
   }
 
-  tryCatch(play_file(sound_path), error = function(ex) {
-    warning("beep() could not play the sound due to the following error:\n", ex)
+  # error message
+  tryCatch(playFile(sound_path), error = function(er) {
+    warning("tone() could not play the sound due to the following error:\n", er)
   })
 }
 
 
-is_wav_fname <- function(fname) {
-  str_detect(fname, regex("\\.wav$", ignore_case = TRUE))
+# Detect the presence or absence of a pattern in a string.
+isWavName <- function(name) {
+  str_detect(name, regex("\\.wav$", ignore_case = TRUE))
 }
 
-escape_spaces <- function(s) {
+replaceSpaces <- function(s) {
   str_replace_all(s, " ", "\\\\ ")
 }
 
-play_vlc <- function(fname) {
-  fname <- escape_spaces(fname)
-  system(paste0("vlc -Idummy --no-loop --no-repeat --playlist-autostart --no-media-library --play-and-exit ", fname),
-         ignore.stdout = TRUE, ignore.stderr=TRUE,wait = FALSE)
+
+# play VLC
+playVLC <- function(name) {
+  name <- replaceSpaces(name)
+  system(paste0("vlc -Idummy --no-loop --no-repeat --playlist-autostart --no-media-library --play-and-exit ", name),
+    ignore.stdout = TRUE, ignore.stderr = TRUE, wait = FALSE
+  )
   invisible(NULL)
 }
 
-play_paplay <- function(fname) {
-  fname <- escape_spaces(fname)
-  system(paste0("paplay ", fname), ignore.stdout = TRUE, ignore.stderr=TRUE,wait = FALSE)
+# play Pulse Audio (LINUX)
+playPaplay <- function(name) {
+  name <- replaceSpaces(name)
+  system(paste0("paplay ", name), ignore.stdout = TRUE, ignore.stderr = TRUE, wait = FALSE)
   invisible(NULL)
 }
 
-play_aplay <- function(fname) {
-  fname <- escape_spaces(fname)
-  system(paste0("aplay --buffer-time=48000 -N -q ", fname), ignore.stdout = TRUE, ignore.stderr=TRUE,wait = FALSE)
+# play ALSA Audio
+playAplay <- function(name) {
+  name <- replaceSpaces(name)
+  system(paste0("aplay --buffer-time=48000 -N -q ", name), ignore.stdout = TRUE, ignore.stderr = TRUE, wait = FALSE)
   invisible(NULL)
 }
 
-play_audio <- function(fname) {
-  sfx <- load.wave(fname)
-  play(sfx)
+
+# play the sound
+playAudio <- function(name) {
+  soundWav <- load.wave(name)
+  play(soundWav)
 }
 
-play_file <- function(fname) {
-  if(Sys.info()["sysname"] == "Linux") {
-    if(is_wav_fname(fname) && nchar(Sys.which("paplay")) >= 1) {
-      play_paplay(fname)
-    } else if(is_wav_fname(fname) && nchar(Sys.which("aplay")) >= 1) {
-      play_aplay(fname)
-    } else if(nchar(Sys.which("vlc")) >= 1) {
-      play_vlc(fname)
+
+# play the file
+playFile <- function(name) {
+  if (Sys.info()["sysname"] == "Linux") {
+    if (isWavName(name) && nchar(Sys.which("paplay")) >= 1) {
+      playPaplay(name)
+    } else if (isWavName(name) && nchar(Sys.which("aplay")) >= 1) {
+      playAplay(name)
+    } else if (nchar(Sys.which("vlc")) >= 1) {
+      playVLC(name)
     } else {
-      play_audio(fname)
+      playAudio(name)
     }
   } else {
-    play_audio(fname)
+    playAudio(name)
   }
 }
