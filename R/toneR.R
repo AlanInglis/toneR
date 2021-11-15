@@ -27,7 +27,10 @@
 tone <- function(sound = 1) {
 
   # set all sounds
-  sounds <- c(purge = "purge.wav")
+  sounds <- c(purge    = "purge.wav",
+              facebook = "facebook.wav",
+              whatsapp = "whatsapp.wav",
+              iphone   = "iphone.wav")
 
   # set sound path
   sound_path <- NULL
