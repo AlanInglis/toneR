@@ -17,8 +17,9 @@
 #' @return NULL
 #'
 #' @examples
-#' # Play a "ping" sound
-#' tone()
+#' # Play "vader" breathing sound
+#' tone("vader")
+#'
 #' @export
 
 
