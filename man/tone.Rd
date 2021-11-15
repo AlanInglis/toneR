@@ -7,13 +7,12 @@
 tone(sound = 1)
 }
 \arguments{
-\item{sound}{A number or name (character) of the sound to be played.
-Possible sounds are:
-\enumerate{ \item \code{"purge"} }. If \code{sound} does not match any
-of the sounds above a random sound will be played.}
+\item{sound}{A number or name (character) of the tone to be played.
+If \code{sound} does not match any of the inbuilt tones, a random tone will
+be played.}
 }
 \description{
-Play a sound.
+Play a tone
 }
 \examples{
 # Play a "ping" sound

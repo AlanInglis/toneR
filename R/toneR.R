@@ -1,12 +1,11 @@
 #' toneR
 #'
-#' @description Play a sound.
+#' @description Play a tone
 #'
 #'
-#' @param sound A number or name (character) of the sound to be played.
-#' Possible sounds are:
-#' \enumerate{ \item \code{"purge"} }. If \code{sound} does not match any
-#' of the sounds above a random sound will be played.
+#' @param sound A number or name (character) of the tone to be played.
+#' If \code{sound} does not match any of the inbuilt tones, a random tone will
+#' be played.
 #'
 #' @importFrom stringr str_trim
 #' @importFrom stringr str_detect
@@ -27,10 +26,35 @@
 tone <- function(sound = 1) {
 
   # set all sounds
-  sounds <- c(purge    = "purge.wav",
-              facebook = "facebook.wav",
-              whatsapp = "whatsapp.wav",
-              iphone   = "iphone.wav")
+  sounds <- c(
+    chewy = "chewy.wav",
+    doh = "doh.wav",
+    hyperdrive_fail = "hyperdrive_fail.wav",
+    lightsaber = "lightsaber.wav",
+    R2D2_1 = "R2D2_1.wav",
+    R2D2_2 = "R2D2_2.wav",
+    R2D2_3 = "R2D2_3.wav",
+    TIE_fire = "TIE_fire.wav",
+    TIE_fly = "TIE_fly.wav",
+    TNG_alarm = "TNG_alarm.wav",
+    TNG_alarm2 = "TNG_alarm2.wav",
+    TNG_alarm3 = "TNG_alarm3.wav",
+    TNG_communicator = "TNG_communicator.wav",
+    TNG_computer = "TNG_computer.wav",
+    TNG_deny = "TNG_deny.wav",
+    TNG_phaser = "TNG_phaser.wav",
+    TNG_powerloss = "TNG_powerloss.wav",
+    TNG_torpedo = "TNG_torpedo.wav",
+    TNG_tractor = "TNG_tractor.wav",
+    TNG_transporter = "TNG_transporter.wav",
+    TOS_communicator = "TOS_communicator.wav",
+    TOS_phaser = "TOS_phaser.wav",
+    TOS_transporter = "TOS_transporter.wav",
+    vader = "vader.wav",
+    purge  = "purge.wav",
+    facebook = "facebook.wav",
+    whatsapp = "whatsapp.wav",
+    iphone   = "iphone.wav")
 
   # set sound path
   sound_path <- NULL
