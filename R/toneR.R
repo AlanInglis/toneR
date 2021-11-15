@@ -1,10 +1,10 @@
 #' Play a short sound
 #'
-#'\code{beep} plays a short sound which is useful if you want to get notified,
+#'\code{tone} plays a short sound which is useful if you want to get notified,
 #'for example, when a script has finished. As an added bonus there are a number
 #'of different sounds to choose from.
 #'
-#'If \code{beep} is not able to play the sound a warning is issued rather than
+#'If \code{tone} is not able to play the sound a warning is issued rather than
 #'an error. This is in order to not risk aborting or stopping the process that
 #'you wanted to get notified about.
 #'
@@ -15,10 +15,7 @@
 #'  \item \code{"complete"} \item \code{"treasure"} \item \code{"ready"} \item
 #'  \code{"shotgun"} \item \code{"mario"} \item \code{"wilhelm"} \item
 #'  \code{"facebook"} \item \code{"sword"} } If \code{sound} does not match any
-#'  of the sounds above, or is a valid path or url, a random sound will be
-#'  played. Currently \code{beep} can only handle http urls, https is not
-#'  supported.
-#'@param expr An optional expression to be excecuted before the sound.
+#'  of the sounds above a random sound will be played.
 #'
 #'
 #'@return NULL
@@ -40,19 +37,9 @@
 #' update.packages(ask=FALSE); beep()
 #' }
 #'@export
-beep <- function(sound=1, expr=NULL) {
-  expr
-  sounds <- c(ping = "microwave_ping_mono.wav",
-              coin = "smb_coin.wav",
-              fanfare = "victory_fanfare_mono.wav",
-              complete = "work_complete.wav",
-              treasure = "new_item.wav",
-              ready = "ready_master.wav",
-              shotgun = "shotgun.wav",
-              mario = "smb_stage_clear.wav",
-              wilhelm = "wilhelm.wav",
-              facebook = "facebook.wav",
-              sword = "sword.wav")
+tone <- function(sound=1) {
+
+  sounds <- c(purge = "purge.wav")
 
   sound_path <- NULL
   if(is.na(sounds[sound]) || length(sounds[sound]) != 1) {

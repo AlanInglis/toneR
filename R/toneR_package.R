@@ -14,11 +14,10 @@
 #'
 #' @examples
 #' # Play a "ping" sound
-#' beep()
+#' tone()
 #'
-#' @name beepr
+#' @name toneR
 #' @encoding UTF-8
 #' @docType package
-#' @author Rasmus Bååth < rasmus.baath@@gmail.com >
 #' @import audio stringr utils
 NULL

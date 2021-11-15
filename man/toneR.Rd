@@ -2,8 +2,8 @@
 % Please edit documentation in R/toneR_package.R
 \docType{package}
 \encoding{UTF-8}
-\name{beepr}
-\alias{beepr}
+\name{toneR}
+\alias{toneR}
 \title{Easily Play Notification Sounds on any Platform}
 \description{
 This package contains one function, beep(), with one purpose: To make it easy
@@ -21,9 +21,6 @@ installed and on the PATH. Chances are that you already have one of these.
 }
 \examples{
 # Play a "ping" sound
-beep()
+tone()
 
-}
-\author{
-Rasmus Bååth < rasmus.baath@gmail.com >
 }
